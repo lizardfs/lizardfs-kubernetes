@@ -1,2 +1,2 @@
 # lizardfs-kubernets
-Work in progress on Kubernetes integragion with LizardFS
+Work in progress on Kubernetes integration with LizardFS

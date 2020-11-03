@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: lfs-client
+  namespace: lizardfs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lfs-client
+  template:
+    metadata:
+      name: lfs-client
+      labels: 
+        app: lfs-client
+    spec:
+      containers: 
+      - name: lfs-client
+        image: alephengineering/lizardfs-client:for-testing-ubuntu_20.04_00
+        args: ["/mnt/lizardfs", "-S", "/"]
+        securityContext:
+          privileged: true

@@ -1,0 +1,59 @@
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lfs-chunkserver
+  namespace: lizardfs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lfs-chunkserver
+  serviceName: mfschunkserver
+  template:
+    metadata:
+      labels:
+        app: lfs-chunkserver
+    spec:
+      volumes:
+        - name: task-pv-storage
+          hostPath:
+            path: /home/k8s/lizardfs.com/lfs-chunkserver/var/lib/lizardfs/
+            type: DirectoryOrCreate
+
+        - name: task-pv-hdd
+          hostPath:
+            path: /home/k8s/lizardfs.com/lfs-chunkserver/hdd
+            type: DirectoryOrCreate           
+
+        - name: config
+          configMap:
+            name: lizardfs-chunkserver-config 
+            
+              
+      containers:
+      - name: chunkserver
+        image: alephengineering/lizardfs-chunkserver:for-testing-ubuntu_20.04_00
+        ports:
+        - containerPort: 9422
+        volumeMounts:
+         - name: task-pv-storage
+           mountPath: /var/lib/lizardfs/
+         - name: task-pv-hdd
+           mountPath: /hdd
+         - name: config
+           mountPath: /etc/lizardfs/
+
+---                    
+apiVersion: v1         
+kind: Service          
+metadata:              
+  name: mfschunkserver
+  namespace: lizardfs  
+  labels:              
+    app: lfs-chunkserver 
+spec:                  
+  ports:               
+   - port: 9422
+  selector:            
+    app: lfs-chunkserver

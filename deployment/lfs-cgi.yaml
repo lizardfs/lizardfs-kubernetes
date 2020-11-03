@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lfs-cgi
+  namespace: lizardfs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lfs-cgi
+  template:
+    metadata:
+      labels:
+        app: lfs-cgi
+    spec:
+      containers:
+      - name: cgi
+        image: alephengineering/lizardfs-cgiserver:for-testing-ubuntu_20.04_00
+        ports:
+        - containerPort: 9425
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: lfs-cgi
+  namespace: lizardfs
+  labels:
+    app: lfs-cgi
+spec:
+  ports:
+   - port: 9425
+  selector:
+    app: lfs-cgi
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lfs-cgi
+  namespace: lizardfs
+  annotations:
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - hosts:
+      - cgi.france02.aleph.engineering
+    secretName: lfs-cgi-tls-acme
+
+  rules:
+  - host: cgi.france02.aleph.engineering
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: lfs-cgi
+              port:
+                number: 9425
+
+

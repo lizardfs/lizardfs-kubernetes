@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lfs-master
+  namespace: lizardfs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lfs-master
+  serviceName: mfsmaster
+  template:
+    metadata:
+      labels:
+        app: lfs-master
+    spec:
+      nodeSelector:
+        lizardfs.com/nodetype: master
+      volumes:
+        - name: task-pv-storage
+          hostPath:
+            path: /home/k8s/lizardfs.com/lfs-master/var/lib/lizardfs/
+            type: DirectoryOrCreate
+        - name: config
+          configMap:
+            name: lizardfs-master-config 
+            
+              
+      containers:
+      - name: master
+        image: alephengineering/lizardfs-master:for-testing-ubuntu_20.04_00
+        ports:
+        - containerPort: 9421
+        - containerPort: 9420
+        volumeMounts:
+         - name: task-pv-storage
+           mountPath: /var/lib/lizardfs/
+         - name: config
+           mountPath: /etc/lizardfs/
+       
+      initContainers:
+      - name: create-empty-metadata
+        image: busybox
+        command: ['sh', '-c', 'if [ ! -f /var/lib/lizardfs/metadata.mfs ]; then echo -n "MFSM NEW" > /var/lib/lizardfs/metadata.mfs; fi']
+        volumeMounts:
+          - name: task-pv-storage
+            mountPath: /var/lib/lizardfs/
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mfsmaster
+  namespace: lizardfs
+  labels:
+    app: lfs-master
+spec:
+  ports:
+   - name: chunkservers
+     port: 9420
+     targetPort: 9420
+   - name: clients
+     port: 9421
+     targetPort: 9421
+  selector:
+    app: lfs-master

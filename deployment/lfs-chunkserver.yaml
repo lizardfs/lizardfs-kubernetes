@@ -24,13 +24,23 @@ spec:
         - name: task-pv-hdd
           hostPath:
             path: /home/k8s/lizardfs.com/lfs-chunkserver/hdd
-            type: DirectoryOrCreate           
+            type: DirectoryOrCreate
 
         - name: config
           configMap:
-            name: lizardfs-chunkserver-config 
-            
-              
+            name: lizardfs-chunkserver-config
+
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: "app"
+                  operator: In
+                  values:
+                  - lfs-chunkserver
+            topologyKey: "kubernetes.io/hostname"
+
       containers:
       - name: chunkserver
         image: alephengineering/lizardfs-chunkserver:for-testing-ubuntu_20.04_00
@@ -44,16 +54,16 @@ spec:
          - name: config
            mountPath: /etc/lizardfs/
 
----                    
-apiVersion: v1         
-kind: Service          
-metadata:              
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: mfschunkserver
-  namespace: lizardfs  
-  labels:              
-    app: lfs-chunkserver 
-spec:                  
-  ports:               
+  namespace: lizardfs
+  labels:
+    app: lfs-chunkserver
+spec:
+  ports:
    - port: 9422
-  selector:            
+  selector:
     app: lfs-chunkserver

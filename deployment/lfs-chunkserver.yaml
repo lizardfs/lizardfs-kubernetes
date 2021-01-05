@@ -1,15 +1,12 @@
-
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: lfs-chunkserver
   namespace: lizardfs
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: lfs-chunkserver
-  serviceName: mfschunkserver
   template:
     metadata:
       labels:

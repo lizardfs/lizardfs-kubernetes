@@ -33,30 +33,4 @@ spec:
   selector:
     app: lfs-cgi
 
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: lfs-cgi
-  namespace: lizardfs
-  annotations:
-    kubernetes.io/tls-acme: "true"
-spec:
-  tls:
-  - hosts:
-      - cgi.france02.aleph.engineering
-    secretName: lfs-cgi-tls-acme
-
-  rules:
-  - host: cgi.france02.aleph.engineering
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: lfs-cgi
-              port:
-                number: 9425
-
 

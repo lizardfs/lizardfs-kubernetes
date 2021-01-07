@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: cgi
-        image: alephengineering/lizardfs-cgiserver:for-testing-ubuntu_20.04_00
+        image: lizardfscom/cgi-server:3.12.0-focal
         ports:
         - containerPort: 9425
 

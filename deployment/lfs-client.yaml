@@ -16,7 +16,7 @@ spec:
     spec:
       containers: 
       - name: lfs-client
-        image: alephengineering/lizardfs-client:for-testing-ubuntu_20.04_00
+        image: lizardfscom/client:3.12.0-focal
         args: ["/mnt/lizardfs", "-H", "mfsmaster.lizardfs", "-S", "/"]
         securityContext:
           privileged: true

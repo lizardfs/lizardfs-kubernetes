@@ -19,16 +19,15 @@ spec:
       volumes:
         - name: task-pv-storage
           hostPath:
-            path: /home/k8s/lizardfs.com/lfs-master/var/lib/lizardfs/
+            path: /home/lizardfs.com/k8s/lfs-master/var/lib/lizardfs/
             type: DirectoryOrCreate
         - name: config
           configMap:
             name: lizardfs-master-config 
-            
               
       containers:
       - name: master
-        image: alephengineering/lizardfs-master:for-testing-ubuntu_20.04_00
+        image: lizardfscom/master-server:3.12.0-focal
         ports:
         - containerPort: 9421
         - containerPort: 9420

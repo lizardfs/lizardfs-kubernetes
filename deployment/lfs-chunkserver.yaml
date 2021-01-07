@@ -15,32 +15,21 @@ spec:
       volumes:
         - name: task-pv-storage
           hostPath:
-            path: /home/k8s/lizardfs.com/lfs-chunkserver/var/lib/lizardfs/
+            path: /home/lizardfs.com/k8s/lfs-chunkserver/var/lib/lizardfs/
             type: DirectoryOrCreate
 
         - name: task-pv-hdd
           hostPath:
-            path: /home/k8s/lizardfs.com/lfs-chunkserver/hdd
+            path: /home/lizardfs.com/k8s/lfs-chunkserver/hdd
             type: DirectoryOrCreate
 
         - name: config
           configMap:
             name: lizardfs-chunkserver-config
 
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: "app"
-                  operator: In
-                  values:
-                  - lfs-chunkserver
-            topologyKey: "kubernetes.io/hostname"
-
       containers:
       - name: chunkserver
-        image: alephengineering/lizardfs-chunkserver:for-testing-ubuntu_20.04_00
+        image: lizardfscom/chunk-server:3.12.0-focal
         ports:
         - containerPort: 9422
         volumeMounts:

@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: lfs-master
-  serviceName: mfsmaster
+  serviceName: lfs-master
   template:
     metadata:
       labels:
@@ -50,7 +50,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mfsmaster
+  name: lfs-master
   namespace: lizardfs
   labels:
     app: lfs-master

@@ -17,6 +17,6 @@ spec:
       containers: 
       - name: lfs-client
         image: lizardfscom/client:3.12.0-focal
-        args: ["/mnt/lizardfs", "-H", "mfsmaster.lizardfs", "-S", "/"]
+        args: ["/mnt/lizardfs", "-H", "lfs-master.lizardfs", "-S", "/"]
         securityContext:
           privileged: true

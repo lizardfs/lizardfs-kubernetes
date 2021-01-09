@@ -37,7 +37,7 @@ data:
 
     ## LizardFS master host to connect to.
     ## (Default: mfsmaster)
-    #MASTER_HOST = mfsmaster.lizardfs.svc.cluster.local
+    MASTER_HOST = lfs-master.lizardfs.svc.cluster.local
 
     ## Master port to connect to (Default: 9420):
     #MASTER_PORT = 9420

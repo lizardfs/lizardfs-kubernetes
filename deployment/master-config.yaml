@@ -136,7 +136,7 @@ data:
 
     ## Name of process to place in syslog messages.
     ## (Default: mfsmaster)
-    # SYSLOG_IDENT = mfsmaster
+    SYSLOG_IDENT = lfs-master
 
     ## Whether to perform "mlockall()" to avoid swapping out mfsmaster process,
     ## boolean value (0 or 1).
@@ -325,7 +325,7 @@ data:
     ## Address of the host running LizardFS metadata server that currently
     ## acts as master.
     ## Mandatory for "shadow" instance.
-    # MASTER_HOST = mfsmaster
+    MASTER_HOST = lfs-master
 
     ## Port number where LizardFS metadata server currently running as master
     ## listens for connections from shadow's and metaloggers.

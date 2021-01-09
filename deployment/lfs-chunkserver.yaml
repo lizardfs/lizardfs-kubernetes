@@ -44,7 +44,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mfschunkserver
+  name: lfs-chunkserver
   namespace: lizardfs
   labels:
     app: lfs-chunkserver

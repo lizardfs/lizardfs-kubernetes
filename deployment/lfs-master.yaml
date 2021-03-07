@@ -64,3 +64,20 @@ spec:
      targetPort: 9421
   selector:
     app: lfs-master
+
+# provides legacy master dns alias to support apps relying on it, e.g. cgi server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mfsmaster
+  namespace: lizardfs
+  labels:
+    app: lfs-master
+spec:
+  ports:
+   - name: clients
+     port: 9421
+     targetPort: 9421
+  selector:
+    app: lfs-master
